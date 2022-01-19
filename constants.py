@@ -5,6 +5,7 @@ ORTHOPHOTOS = './data/ortho'
 ORTHOPHOTO_MASKS = './data/ortho_mask'
 INFERENCE_OUTPUT = './data/inference_output'
 SLICE_NAMES = './data/names.txt'
+ORTHO_NAMES = './data/ortho_names.txt'
 
 MODEL_SAVE_FOLDER = './models'
 INFERENCE_DATA_PATH = './data/inference_data'

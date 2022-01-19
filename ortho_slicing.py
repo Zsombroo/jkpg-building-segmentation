@@ -1,3 +1,7 @@
+# TODO: DOCUMENT IT: BOTH MASK AND ORTHOPOTO HAVE TO BE NAMED THE SAME
+
+
+import glob
 import os
 
 import cv2
@@ -8,14 +12,22 @@ from image_slicing_helper import generate_color_based_heatmap
 from image_slicing_helper import slice_image
 
 from constants import GREEN_FILTER_PATH
+from constants import INFERENCE_DATA_PATH
 from constants import ORTHOPHOTOS
 from constants import ORTHOPHOTO_MASKS
+from constants import ORTHO_NAMES
 from constants import X_PATH
 from constants import Y_PATH
 
 
-# TODO: BOTH MASK AND ORTHOPOTO HAVE TO BE NAMED THE SAME
+# Remove files from previous run
+folders_to_emppty = [GREEN_FILTER_PATH, INFERENCE_DATA_PATH, X_PATH, Y_PATH]
+for folder in folders_to_emppty:
+    files = glob.glob(f'{folder}/*')
+    for f in files:
+        os.remove(f)
 
+ortho_last_slice_names = []
 # Slice orthophotos
 if os.listdir(ORTHOPHOTOS) != 0:
     for image in os.listdir(ORTHOPHOTOS):
@@ -27,6 +39,9 @@ if os.listdir(ORTHOPHOTOS) != 0:
         )
         for k, v in tqdm.tqdm(slices.items()):
             cv2.imwrite(f'{X_PATH}/{k}.png', v)
+        ortho_last_slice_names.append(k)
+
+mask_last_slice_names = []
 # Slice orthophoto masks
 if os.listdir(ORTHOPHOTO_MASKS) != 0:
     for image in os.listdir(ORTHOPHOTO_MASKS):
@@ -38,6 +53,16 @@ if os.listdir(ORTHOPHOTO_MASKS) != 0:
         )
         for k, v in tqdm.tqdm(slices.items()):
             cv2.imwrite(f'{Y_PATH}/{k}.png', v)
+        mask_last_slice_names.append(k)
+
+for file in mask_last_slice_names:
+    if file not in ortho_last_slice_names:
+        print(f'ERROR: Mask ({file.split("_")[0]}) has no corresponding orthophoto')
+        exit()
+
+with open(ORTHO_NAMES, 'w') as f:
+    for i in ortho_last_slice_names:
+        f.write(f'{i}\n')
 
 extract_file_names_from_input_data(X_PATH)
 

@@ -10,8 +10,10 @@ from image_slicing_helper import extract_file_names_from_input_data
 from constants import EXTRA_PATHS
 from constants import IMAGE_SHAPE
 from constants import INFERENCE_DATA_PATH
+from constants import INFERENCE_OUTPUT
 from constants import MODEL_NAME
 from constants import MODEL_SAVE_FOLDER
+from constants import ORTHO_NAMES
 from constants import OUTPUT_MASK_RGB_COLOR
 from constants import THRESHOLD_VALUE
 from constants import X_PATH
@@ -86,12 +88,24 @@ for image_name in sorted(os.listdir(X_PATH)):
     if not cv2.imwrite(f'{INFERENCE_DATA_PATH}/{image_name}', pred*255):
         print('problem')
 
-# TODO: Make it work with multiple orthophotos
+names = []
+with open(ORTHO_NAMES, 'r') as f:
+    for name in f:
+        tmp = []
+        splt = name.strip().split('_')
+        i = int(splt[-2])
+        j = int(splt[-1])
+        size_length = len(f'_{i}_{j}')+1
+        tmp.append(name[:-size_length])
+        tmp.append(i)
+        tmp.append(j)
+        names.append(tmp)
 
-images = []
-for i in range(10):
-    images.append([])
-    for j in range(17):
-        images[i].append(Image.open(f'{INFERENCE_DATA_PATH}/barnarp_{i}_{j}.png'))
+for name in names:
+    images = []
+    for i in range(name[1]):
+        images.append([])
+        for j in range(name[2]):
+            images[i].append(Image.open(f'{INFERENCE_DATA_PATH}/{name[0]}_{i}_{j}.png'))
 
-get_concat_tile_resize(images).save(f'_barnarp_mask.png')
+    get_concat_tile_resize(images).save(f'{INFERENCE_OUTPUT}/{name[0]}_mask.png')
