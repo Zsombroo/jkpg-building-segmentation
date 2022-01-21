@@ -61,4 +61,3 @@ def create_model(name: str = "U-Net") -> tf.keras.Model:
         metrics=['accuracy']
     )
     return model
-    
