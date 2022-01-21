@@ -4,6 +4,7 @@
 ORTHOPHOTOS = './data/ortho'
 ORTHOPHOTO_MASKS = './data/ortho_mask'
 INFERENCE_OUTPUT = './data/inference_output'
+
 SLICE_NAMES = './data/names.txt'
 ORTHO_NAMES = './data/ortho_names.txt'
 
@@ -24,7 +25,7 @@ EXTRA_PATHS = [
 
 MODEL_NAME = 'green_filtered_model'  # Name of the ensemble model
 
-IMAGE_SHAPE = (512, 512, 4)
+IMAGE_SHAPE = (512, 512, 3+len(EXTRA_PATHS))
 MASK_SHAPE = (512, 512, 1)
 
 ENSEMBLE_SIZE = 5  # Number of models to be trained for the ensemble

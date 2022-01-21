@@ -92,36 +92,3 @@ def load_training_data() -> tuple:
     val = val.padded_batch(BATCH_SIZE)
     test = test.padded_batch(BATCH_SIZE)
     return train, val, test
-
-
-'''def _test_generator():
-    data_folders = []
-    data_folders.append(TEST_PATH)
-    data_folders.append(T_GREEN_FILTER_PATH)
-
-    images = []
-    with open(SLICE_NAMES) as f:
-        for line in f:
-            images.append(line.strip())
-    
-    if len(data_folders) > 1:
-        for image in images:
-            tmp = []
-            tmp.append(cv2.imread('/'.join([data_folders[0], image])))
-            for input_data_path in data_folders[1:]:
-                tmp.append(cv2.imread('/'.join([input_data_path, image]), cv2.IMREAD_GRAYSCALE))
-            yield np.dstack(tmp)/255
-    elif len(data_folders) == 1:
-        for image in images:
-            yield cv2.imread('/'.join([data_folders[0], image]))/255'''
-
-'''def _gen_testing_ds() -> tf.data.Dataset:
-    return tf.data.Dataset.from_generator(
-        _test_generator,
-        output_signature=(
-            tf.TensorSpec(
-                shape=IMAGE_SHAPE,
-                dtype=tf.float32
-            )
-        )
-    )'''

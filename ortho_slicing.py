@@ -12,13 +12,32 @@ from image_slicing_helper import generate_color_based_heatmap
 from image_slicing_helper import slice_image
 
 from constants import GREEN_FILTER_PATH
+from constants import EXTRA_PATHS
 from constants import INFERENCE_DATA_PATH
+from constants import INFERENCE_OUTPUT
 from constants import ORTHOPHOTOS
 from constants import ORTHOPHOTO_MASKS
 from constants import ORTHO_NAMES
 from constants import X_PATH
 from constants import Y_PATH
 
+
+# Generate defined folders if they do not exist
+folders_to_check = [
+    ORTHOPHOTOS,
+    ORTHOPHOTO_MASKS,
+    X_PATH,
+    Y_PATH,
+    INFERENCE_DATA_PATH,
+    INFERENCE_OUTPUT
+]
+for path in EXTRA_PATHS:
+    folders_to_check.append(path)
+
+for folder in folders_to_check:
+    if not os.path.exists(folder):
+        print(f'Creating {folder}')
+        os.makedirs(folder)
 
 # Remove files from previous run
 folders_to_emppty = [GREEN_FILTER_PATH, INFERENCE_DATA_PATH, X_PATH, Y_PATH]
