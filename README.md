@@ -11,6 +11,7 @@ pip install -r requirements.txt
 ## Inference on new images
 * constants.py contains settings and folders that the application will use
 * make sure there are some image(s) in the "ORTHOPHOTOS" folder given in constants.py
+* the "MODEL_NAME" variable in constants.py holds the name of the model that will be used during inference
 * run "python ortho_slicing.py" from the command line
   - this slices the image(s) into 512x512 squares, and performs preprocessing on the slices
 * run "python inference.py" from the command line
