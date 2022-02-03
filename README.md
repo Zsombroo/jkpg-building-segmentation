@@ -23,6 +23,7 @@ It is possible to train a new model based on labeled data. The model will train 
 
 * constants.py contains settings and folders that the application will use
 * make sure there are some image(s) in the "ORTHOPHOTOS" and "ORTHOPHOTOS_MASKS" folders. The name of the orthophoto and orthophoto masks shall be the same to make the application match the orthophoto(s) with the corresponding ground truth (masks)
+* the "MODEL_NAME" variable in constants.py holds the name of the model that will be created during training
 * run "python training.py" from the command line
   - this trains a new model with the given data and will store the model in the "MODEL_SAVE_FOLDER" folder in constants.py
  
