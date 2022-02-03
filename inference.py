@@ -108,4 +108,4 @@ for name in names:
         for j in range(name[2]):
             images[i].append(Image.open(f'{INFERENCE_DATA_PATH}/{name[0]}_{i}_{j}.png'))
 
-    get_concat_tile_resize(images).save(f'{INFERENCE_OUTPUT}/{name[0]}_mask.png')
+    get_concat_tile_resize(images).save(f'{INFERENCE_OUTPUT}/{name[0]}_mask.tif')
