@@ -1,3 +1,22 @@
+''' AI Support for building detection
+    Copyright (C) 2022  Zsombor Toth
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+'''
+
+
 import os
 import cv2
 import numpy as np
@@ -10,14 +29,6 @@ def extract_file_names_from_input_data(x_path: str):
     with open(SLICE_NAMES, 'w') as f:
         for image in sorted(os.listdir(x_path)):
             f.write(image + '\n')
-
-
-def normalize(x):
-    mag = np.sqrt(x.dot(x))
-    if mag != 0:
-        return x/mag
-    else:
-        return x
 
 
 def slice_image(
@@ -53,28 +64,17 @@ def generate_color_based_heatmap(
     for image in tqdm.tqdm(images):
         color_normal_image = cv2.imread('/'.join([original_images, image]))
 
-        # Per pixel color vector normalization
+        # Filtering based on majority of color (Green->0, Red/Blue->255)
         for x in range(len(color_normal_image)):
             for y in range(len(color_normal_image[x])):
-                color_normal_image[x, y] = normalize(color_normal_image[x, y])
-
-        # Filtering based on majority of color (Green->0, Red/Blue->255)
-        image_heatmap = np.ndarray((512, 512))
-        for x in range(len(image_heatmap)):
-            for y in range(len(image_heatmap[x])):
-                if color_normal_image[x, y, 1] > color_normal_image[x, y, 0] \
-                and color_normal_image[x, y, 1] > color_normal_image[x, y, 2]:
-                    image_heatmap[x, y] = 0
+                if color_normal_image[x, y, 1] >= color_normal_image[x, y, 0] \
+                and color_normal_image[x, y, 1] >= color_normal_image[x, y, 2]:
+                    color_normal_image[x, y] = 0
                 else:
-                    image_heatmap[x, y] = 255
+                    color_normal_image[x, y] = 255
 
         # Blur heatmap to become a heatmap instead of a mask
-        for i in range(1):
-            image_heatmap = cv2.GaussianBlur(
-                image_heatmap, 
-                (99, 99), 
-                cv2.BORDER_DEFAULT,
-            )
+        color_normal_image = cv2.GaussianBlur(color_normal_image, (99, 99), cv2.BORDER_DEFAULT)
                 
-        if not cv2.imwrite('/'.join([output_path, image]), image_heatmap):
+        if not cv2.imwrite('/'.join([output_path, image]), color_normal_image):
             raise Exception("Could not write image")
