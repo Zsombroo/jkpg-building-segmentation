@@ -25,8 +25,9 @@ EXTRA_PATHS = [
 
 MODEL_NAME = 'green_filtered_model'  # Name of the ensemble model
 
-IMAGE_SHAPE = (512, 512, 3+len(EXTRA_PATHS))
-MASK_SHAPE = (512, 512, 1)
+IMAGE_SIDE_LENGTH = 512
+IMAGE_SHAPE = (IMAGE_SIDE_LENGTH, IMAGE_SIDE_LENGTH, 3+len(EXTRA_PATHS))
+MASK_SHAPE = (IMAGE_SIDE_LENGTH, IMAGE_SIDE_LENGTH, 1)
 
 ENSEMBLE_SIZE = 5  # Number of models to be trained for the ensemble
 EPOCHS = 1  # Give it a bit number (>1000)

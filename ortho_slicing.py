@@ -28,8 +28,9 @@ from image_slicing_helper import extract_file_names_from_input_data
 from image_slicing_helper import generate_color_based_heatmap
 from image_slicing_helper import slice_image
 
-from constants import GREEN_FILTER_PATH, MASK_SHAPE
+from constants import GREEN_FILTER_PATH
 from constants import EXTRA_PATHS
+from constants import IMAGE_SIDE_LENGTH
 from constants import INFERENCE_DATA_PATH
 from constants import INFERENCE_OUTPUT
 from constants import ORTHOPHOTOS
@@ -83,14 +84,14 @@ def slice_images():
             img_array = cv2.imread('/'.join((ORTHOPHOTOS, image)))
             # Pad image to n*512
             h, w, _ = img_array.shape
-            h_pad = 512 - (h%512)
-            w_pad = 512 - (w%512)
+            h_pad = IMAGE_SIDE_LENGTH - (h%IMAGE_SIDE_LENGTH)
+            w_pad = IMAGE_SIDE_LENGTH - (w%IMAGE_SIDE_LENGTH)
             ortho_size[image] = (h, w)
             img_padded = np.pad(img_array, ((0, h_pad), (0, w_pad), (0, 0)))
             # Slice image
             slices = slice_image(
                 img_padded,
-                512,
+                IMAGE_SIDE_LENGTH,
                 image.split('.')[0],
             )
             for k, v in tqdm.tqdm(slices.items()):
@@ -106,14 +107,14 @@ def slice_images():
             img_array = cv2.imread('/'.join((ORTHOPHOTO_MASKS, image)))
             # Pad mask to n*512
             h, w, _ = img_array.shape
-            h_pad = 512 - (h%512)
-            w_pad = 512 - (w%512)
+            h_pad = IMAGE_SIDE_LENGTH - (h%IMAGE_SIDE_LENGTH)
+            w_pad = IMAGE_SIDE_LENGTH - (w%IMAGE_SIDE_LENGTH)
             mask_size[image] = (h_pad, w_pad)
             img_padded = np.pad(img_array, ((0, h_pad), (0, w_pad), (0, 0)))
             # Slice mask
             slices = slice_image(
                 img_padded,
-                512,
+                IMAGE_SIDE_LENGTH,
                 image.split('.')[0],
             )
             for k, v in tqdm.tqdm(slices.items()):

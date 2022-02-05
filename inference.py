@@ -66,8 +66,8 @@ extract_file_names_from_input_data(X_PATH)
 
 # Importing preprocessed image slices and predicting their respective masks
 for image_name in sorted(os.listdir(X_PATH)):
-    image = data_generator(image_name).reshape(1, 512, 512, IMAGE_SHAPE[-1])
-    pred = ensemble_model.predict(image).reshape(512,512,1)
+    image = data_generator(image_name).reshape(1, IMAGE_SHAPE[0], IMAGE_SHAPE[1], IMAGE_SHAPE[2])
+    pred = ensemble_model.predict(image).reshape(IMAGE_SHAPE[0], IMAGE_SHAPE[1], 1)
     threshold = THRESHOLD_VALUE
     pred[pred <= threshold] = 0.0
     pred[pred > threshold] = 1.0
@@ -78,7 +78,7 @@ for image_name in sorted(os.listdir(X_PATH)):
             pred * OUTPUT_MASK_RGB_COLOR[2], 
             pred
         ],
-        axis=2).reshape(512, 512, 4)
+        axis=2).reshape(IMAGE_SHAPE[0], IMAGE_SHAPE[1], 4)
     if not cv2.imwrite(f'{INFERENCE_DATA_PATH}/{image_name}', pred*255):
         print('problem')
 
