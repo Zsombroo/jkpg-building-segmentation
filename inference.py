@@ -61,9 +61,11 @@ def data_generator(image_name):
 
 
 ortho_size, _ = slice_images()
+print('Loading model and preparing for inference')
 ensemble_model = tf.keras.models.load_model(f'{MODEL_SAVE_FOLDER}/{MODEL_NAME}.h5')
 extract_file_names_from_input_data(X_PATH)
 
+print('Inference in action')
 # Importing preprocessed image slices and predicting their respective masks
 for image_name in sorted(os.listdir(X_PATH)):
     image = data_generator(image_name).reshape(1, IMAGE_SHAPE[0], IMAGE_SHAPE[1], IMAGE_SHAPE[2])
@@ -87,6 +89,7 @@ for image_name in sorted(os.listdir(X_PATH)):
 # since they contain the number of sliced rows and columns, these names can
 # help to collect the correct slices and the correct number of slices per
 # orthophoto
+print('Assembling output images')
 names = []
 with open(ORTHO_NAMES, 'r') as f:
     for name in f:
@@ -114,3 +117,5 @@ for name in names:
     output = output.crop((0, 0, ortho_size[f'{name[0]}.tif'][1], ortho_size[f'{name[0]}.tif'][0]))
     # Saving output image
     output.save(f'{INFERENCE_OUTPUT}/{name[0]}_mask.tif')
+
+print('Done')
