@@ -130,6 +130,3 @@ dmypy.json
 
 .vscode/
 ipynb_checkpoints
-data/ortho/*
-data/ortho_mask/*
-data/inferenc_output/*
