@@ -8,6 +8,12 @@ After installing the environment and cloning the repository, install the package
 pip install -r requirements.txt
 ```
 
+It is recommended to use a GPU when performing inference on new orhthophotos and training new models. If a GPU is installed but not correctly, the application might exit abruptly. In this case, and the user wants to use CPU instead of GPU, the following line can be added to inference.py and training.py:
+```
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+```
+
 ## Inference on new images
 * constants.py contains settings and folders that the application will use
 * make sure there are some image(s) in the "ORTHOPHOTOS" folder given in constants.py
@@ -15,11 +21,12 @@ pip install -r requirements.txt
 * run "python ortho_slicing.py" from the command line
   - this slices the image(s) into 512x512 squares, and performs preprocessing on the slices
 * run "python inference.py" from the command line
-  - this performs inference on the sliced image(s), and connects the slices back to the original size
+  - this first slices the image(s) into 512x512 squares, and performs preprocessing on the slices
+  - this secondly performs inference on the sliced image(s), and connects the slices back to the original size
 * the produced binary image file(s) that are the layer of predicted buildings will be created in "INFERENCE_OUTPUT" folder given in constants.py
 
 ## Training a new model
-It is possible to train a new model based on labeled data. The model will train on the corresponding input orthophoto(s) and ground truth binary image(s), and generate a model that can be used for inference on new orthophotos. The structure of the model will be the same for all the models, but giving the model more data to train on, could improve the accuracy of the model.
+It is possible to train a new model based on labeled data. The model will train on the input orthophoto(s) and corresponding ground truth binary image(s), and generate a model that can be used for inference on new orthophotos. The structure of the model will be the same for all the models, but giving the model more data to train on, could improve the accuracy of the model.
 
 * constants.py contains settings and folders that the application will use
 * make sure there are some image(s) in the "ORTHOPHOTOS" and "ORTHOPHOTOS_MASKS" folders. The name of the orthophoto and orthophoto masks shall be the same to make the application match the orthophoto(s) with the corresponding ground truth (masks)
