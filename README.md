@@ -14,9 +14,9 @@ import os
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 ```
 
-## Inference on new images
+## Inference on new orthophotos
 * constants.py contains settings and folders that the application will use
-* make sure there are some image(s) in the "ORTHOPHOTOS" folder given in constants.py
+* make sure there are some orthophotos(s) in the "ORTHOPHOTOS" folder given in constants.py
 * the "MODEL_NAME" variable in constants.py holds the name of the model that will be used during inference
 * run "python inference.py" from the command line
   - first the orthophoto(s) are sliced into 512x512 squares, and preprocessing is performed on the slices
