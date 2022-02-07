@@ -8,7 +8,7 @@ After installing the environment and cloning the repository, install the package
 pip install -r requirements.txt
 ```
 
-It is recommended to use a GPU when performing inference on new orhthophotos and training new models. If a GPU is installed but not correctly, the application might exit abruptly. In this case, and the user wants to use CPU instead of GPU, the following line can be added to inference.py and training.py:
+It is recommended to use a GPU when performing inference on new orhthophotos and training new models. If a GPU is installed, but not correctly, the application might exit abruptly. In this case, and if the user wants to use CPU instead of GPU, the following line can be added to the beginning of inference.py and training.py:
 ```
 import os
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
